@@ -1,0 +1,64 @@
+<body class="hold-transition login-page">
+  <div class="login-box">
+  <div class="login-logo">
+    <a routerLink="/"><b>Admin</b>LTE</a>
+  </div>
+  <div class="card">
+    <div class="card-body login-card-body">
+      <p class="login-box-msg">Sign in to start your session</p>
+      <form #login="ngForm"
+            class="needs-validation"
+            novalidate
+            [ngClass]="{'was-validated': wasValidated}">
+        <div class="row">
+          <div class="col-12">
+            <div class="input-group mb-3">
+              <input type="text"
+                     name="username"
+                     class="form-control"
+                     placeholder="Username"
+                     autocomplete
+                     [(ngModel)]="username"
+                     required
+              >
+              <div class="input-group-append">
+                <div class="input-group-text">
+                  <span class="fas fa-user"></span>
+                </div>
+              </div>
+            </div>
+            <div class="input-group mb-3">
+              <input type="password"
+                     name="password"
+                     class="form-control"
+                     placeholder="Password"
+                     autocomplete
+                     [(ngModel)]="password"
+                     required
+              >
+              <div class="input-group-append">
+                <div class="input-group-text">
+                  <span class="fas fa-lock"></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-8">
+            <div class="form-check">
+              <input class="form-check-input" style="margin-left: -1.25rem" type="checkbox" id="remember">
+              <label class="form-check-label" for="remember">
+                Remember Me
+              </label>
+            </div>
+          </div>
+          <div class="col-4">
+            <button type="submit" class="btn btn-primary btn-block" (click)="authenticate(login)">Sign In</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+</body>

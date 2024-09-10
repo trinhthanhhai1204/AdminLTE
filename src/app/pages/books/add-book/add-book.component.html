@@ -1,0 +1,194 @@
+<div class="content-wrapper">
+  <div class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1 class="m-0">Tables</h1>
+        </div>
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a routerLink="/">Home</a></li>
+            <li class="breadcrumb-item"><a routerLink="/books">Books</a></li>
+            <li class="breadcrumb-item active"><a routerLink="/add-book/">Add Book</a></li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+  <section class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12">
+          <div class="card shadow" id="book-table">
+            <div class="card-header">
+              <h3 class="card-title">
+                <i class="fa-light fa-chart-bar mr-1"></i>
+                Add Book
+              </h3>
+              <div class="card-tools"></div>
+            </div>
+            <div class="card-body">
+              <form #addBook="ngForm"
+                    class="needs-validation"
+                    novalidate
+                    [ngClass]="{'was-validated': wasValidated}">
+                <div class="row">
+                  <div class="col-12 col-sm-6">
+                    <div class="row">
+                      <div class="col-12">
+                        <label>Ảnh</label>
+                      </div>
+                      <div class="col-3 my-2">
+                        <input class="form-control d-none"
+                               type="file"
+                               id="imageForm"
+                               (change)="onChangeImage($event)"
+                        >
+                        <div class="w-100">
+                          <label for="imageForm" class="d-block ratio ratio-1x1">
+                            <img class="object-fit-cover" [src]="image" alt="">
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-12">
+                        <div class="form-group">
+                          <label>Tên sách</label>
+                          <input class="form-control"
+                                 name="name"
+                                 placeholder="Nhập tên sách..."
+                                 type="text"
+                                 [(ngModel)]="name"
+                                 required
+                          >
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-12">
+                        <div class="form-group">
+                          <label>Giá</label>
+                          <input class="form-control"
+                                 name="price"
+                                 placeholder="Nhập giá sách..."
+                                 type="number"
+                                 value="0"
+                                 min="0"
+                                 [(ngModel)]="price"
+                                 required
+                          >
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-12">
+                        <div class="form-group">
+                          <label>Giới thiệu</label>
+                          <textarea class="form-control"
+                                    name="description"
+                                    placeholder="Nhập giới thiệu..."
+                                    rows="3"
+                                    [(ngModel)]="description"
+                          ></textarea>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-12 col-sm-6">
+                    <div class="row">
+                      <div class="col-12">
+                        <div class="form-group">
+                          <label>Danh mục</label>
+                          <div class="accordion" id="selectCategories">
+                            <div class="accordion-item">
+                              <h2 class="accordion-header">
+                                <button class="accordion-button collapsed py-2" type="button" data-bs-toggle="collapse" data-bs-target="#categoriesCollapse" aria-expanded="false" aria-controls="categoriesCollapse">
+                                  Chọn danh mục
+                                </button>
+                              </h2>
+                              <div id="categoriesCollapse" class="accordion-collapse collapse" data-bs-parent="#selectCategories">
+                                <div class="accordion-body">
+                                  <div class="w-100 mb-2 mx-1">
+                                    <input type="text"
+                                           class="form-control"
+                                           name="search"
+                                           [(ngModel)]="search"
+                                           (input)="onUpdateCheckboxShow()"
+                                           placeholder="Tìm kiếm danh mục"
+                                    >
+                                  </div>
+                                  <div class="mx-1 d-inline-block" *ngFor="let data of categoriesShow">
+                                    <input type="checkbox"
+                                           [checked]="data.selected"
+                                           class="btn-check"
+                                           id="btn-check-{{data.id}}"
+                                           (change)="onCategoryChange($event)"
+                                           value="{{data.id}}"
+                                           name="categories2"
+                                    >
+                                    <label class="btn font-weight-normal"
+                                           for="btn-check-{{data.id}}">{{data.name}}
+                                    </label>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-12">
+                        <div class="form-group">
+                          <label>Hình ảnh</label>
+                          <div class="accordion" id="uploadImages">
+                            <div class="accordion-item">
+                              <h2 class="accordion-header">
+                                <button class="accordion-button collapsed py-2" type="button" data-bs-toggle="collapse" data-bs-target="#imagesCollapse" aria-expanded="false" aria-controls="imagesCollapse">
+                                  Tải ảnh lên
+                                </button>
+                              </h2>
+                              <div id="imagesCollapse" class="accordion-collapse collapse" data-bs-parent="#uploadImages">
+                                <div class="accordion-body">
+                                  <div class="w-100 mb-2 mx-1">
+                                    <div class="row">
+                                      <div class="col-12">
+                                        <div class="mb-3">
+                                          <input class="form-control"
+                                                 type="file"
+                                                 id="imageFiles"
+                                                 multiple
+                                                 (change)="onChangeImages($event)"
+                                          >
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="row">
+                                      <div class="col-3 my-2" *ngFor="let previewImage of base64List">
+                                        <div class="w-100 ratio ratio-1x1">
+                                          <img class="object-fit-cover" [src]="previewImage" alt="">
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+            <div class="card-footer">
+              <button type="submit" class="btn btn-primary" (click)="onAddBook(addBook)">Thêm sách</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

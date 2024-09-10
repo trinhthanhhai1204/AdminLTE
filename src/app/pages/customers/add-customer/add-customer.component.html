@@ -1,0 +1,238 @@
+<div class="content-wrapper">
+  <div class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1 class="m-0">Add User</h1>
+        </div>
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a routerLink="/">Home</a></li>
+            <li class="breadcrumb-item"><a routerLink="/user/customers">Customers</a></li>
+            <li class="breadcrumb-item active"><a routerLink="/user/add-customer">Add Customer</a></li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+  <section class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12">
+          <div class="card shadow" id="book-table">
+            <div class="card-header">
+              <h3 class="card-title">
+                <i class="fa-light fa-chart-bar mr-1"></i>
+                Add Customer
+              </h3>
+              <div class="card-tools"></div>
+            </div>
+            <div class="card-body">
+              <form #addCustomer="ngForm"
+                class="needs-validation"
+                novalidate
+                [ngClass]="{'was-validated': wasValidated}">
+                <div class="row">
+                  <div class="col-12 col-sm-6">
+                    <div class="row">
+                      <div class="col-12">
+                        <label>Ảnh</label>
+                      </div>
+                      <div class="col-3 my-2">
+                        <input class="form-control d-none"
+                               type="file"
+                               id="imageForm"
+                               (change)="onChangeImage($event)"
+                        >
+                        <div class="w-100">
+                          <label for="imageForm" class="d-block ratio ratio-1x1">
+                            <img class="object-fit-cover" [src]="image" alt="">
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-12">
+                        <div class="form-group">
+                          <label>Tên khách hàng</label>
+                          <input class="form-control"
+                                 name="fullName"
+                                 placeholder="Nhập tên khách hàng..."
+                                 type="text"
+                                 [(ngModel)]="fullName"
+                                 required
+                          >
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-12">
+                        <div class="form-group">
+                          <label>Số điện thoại</label>
+                          <input class="form-control"
+                                 name="phone"
+                                 placeholder="Nhập số điện thoại..."
+                                 type="text"
+                                 pattern="0[0-9]{9}"
+                                 [(ngModel)]="phone"
+                                 required
+                          >
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-12">
+                        <div class="form-group">
+                          <label>Giới tính</label>
+                          <div class="form-check">
+                            <input class="form-check-input"
+                                   type="radio"
+                                   name="gender"
+                                   value="male"
+                                   id="gender-male"
+                                   [(ngModel)]="gender"
+                            >
+                            <label class="form-check-label" for="gender-male">
+                              Nam
+                            </label>
+                          </div>
+                          <div class="form-check">
+                            <input class="form-check-input"
+                                   type="radio"
+                                   name="gender"
+                                   value="female"
+                                   id="gender-female"
+                                   [(ngModel)]="gender"
+                            >
+                            <label class="form-check-label" for="gender-female">
+                              Nữ
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-12 col-sm-6">
+                    <div class="row">
+                      <div class="col-12">
+                        <div class="form-group">
+                          <label>Username</label>
+                          <input class="form-control"
+                                 name="username"
+                                 placeholder="Nhập username..."
+                                 type="text"
+                                 [(ngModel)]="username"
+                                 required
+                          >
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-12">
+                        <div class="form-group">
+                          <label>Password</label>
+                          <input class="form-control"
+                                 name="password"
+                                 placeholder="Nhập mật khẩu..."
+                                 type="text"
+                                 [(ngModel)]="password"
+                                 required
+                          >
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-12">
+                        <div class="form-group">
+                          <label>Nhập lại mật khẩu</label>
+                          <input class="form-control"
+                                 name="confirmPassword"
+                                 placeholder="Nhập lại mật khẩu..."
+                                 type="text"
+                                 [(ngModel)]="confirmPassword"
+                                 required
+                          >
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-12">
+                        <div class="form-group">
+                          <label>Ngày sinh</label>
+                          <input autocomplete="true"
+                                 class="form-control"
+                                 name="birthday"
+                                 id="birthday"
+                                 type="date"
+                                 [(ngModel)]="birthday"
+                          >
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-12">
+                        <div class="form-group">
+                          <label>Địa chỉ</label>
+                          <div class="row">
+                            <div class="col-4">
+                              <label class="form-label" for="province">
+                                <span>Province:</span>
+                              </label>
+                              <select
+                                class="form-select"
+                                id="province"
+                                name="province"
+                                [(ngModel)]="province"
+                                required
+                                (change)="onProvinceChange($event)"
+                              >
+                                <option selected="" value="">Select province</option>
+                                <option *ngFor="let province of provinces" [value]="province.code">{{province.name}}</option>
+                              </select>
+                            </div>
+                            <div class="col-4">
+                              <label class="form-label" for="district">
+                                <span>District:</span>
+                              </label>
+                              <select
+                                class="form-select"
+                                id="district"
+                                name="district"
+                                [(ngModel)]="district"
+                                required
+                                (change)="onDistrictChange($event)"
+                              >
+                                <option selected="" value="">Select district</option>
+                                <option *ngFor="let district of districts" [value]="district.code">{{district.fullName}}</option>
+                              </select>
+                            </div>
+                            <div class="col-4">
+                              <label class="form-label" for="ward">
+                                <span>Ward:</span>
+                              </label>
+                              <select class="form-select"
+                                      id="ward"
+                                      name="ward"
+                                      [(ngModel)]="ward"
+                                      required>
+                                <option selected="" value="">Select ward</option>
+                                <option *ngFor="let ward of wards" [value]="ward.code">{{ward.fullName}}</option>
+                              </select>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+            <div class="card-footer">
+              <button type="submit" class="btn btn-primary" (click)="onAddCustomer(addCustomer)">Thêm khách hàng</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

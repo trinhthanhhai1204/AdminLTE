@@ -1,0 +1,168 @@
+<div class="content-wrapper">
+  <div class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1 class="m-0">Dashboard</h1>
+        </div>
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a routerLink="/">Home</a></li>
+            <li class="breadcrumb-item active">Dashboard</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+  <section class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-3 col-sm-6 col-12">
+          <div class="info-box bg-gradient-info shadow">
+            <span class="info-box-icon"><i class="fa-light fa-bookmark"></i></span>
+            <div class="info-box-content">
+              <span class="info-box-text">Đơn hàng đang chờ duyệt</span>
+              <span class="info-box-number">{{order}}</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 col-sm-6 col-12">
+          <div class="info-box bg-gradient-success shadow">
+            <span class="info-box-icon"><i class="fa-light fa-user"></i></span>
+            <div class="info-box-content">
+              <span class="info-box-text">Số khách hàng có tổng giá trị đơn hàng lớn hơn 50,000 đồng</span>
+              <span class="info-box-number">{{customer}}</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 col-sm-6 col-12">
+          <div class="info-box bg-gradient-warning shadow">
+            <span class="info-box-icon"><i class="fa-light fa-coins"></i></span>
+            <div class="info-box-content">
+              <span class="info-box-text">Doanh thu tháng {{month}}</span>
+              <span class="info-box-number">{{revenue | vndCurrency}} đồng</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 col-sm-6 col-12">
+          <div class="info-box bg-gradient-danger shadow">
+            <span class="info-box-icon"><i class="fa-light fa-coins"></i></span>
+            <div class="info-box-content">
+              <span class="info-box-text">Số tập truyện sắp hết hàng</span>
+              <span class="info-box-number">{{countOutOfStock}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <section class="col-lg-6">
+          <div class="card shadow">
+            <div class="card-header">
+              <h3 class="card-title">
+                <i class="fa-light fa-chart-bar mr-1"></i>
+                Đơn hàng đang chờ duyệt
+              </h3>
+              <div class="card-tools">
+                <a routerLink="/orders" [queryParams]="{status: 1}" class="text-black me-2">Xem tất cả</a>
+              </div>
+            </div>
+            <div class="card-body p-0">
+              <table class="table" id="top-seller">
+                <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Create At</th>
+                  <th>Details</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let order of orders">
+                  <td>{{order.id}}</td>
+                  <td>{{order.createAt | date: "dd/MM/y HH:mm"}}</td>
+                  <td class="align-middle">
+                    <a routerLink="/order-details/{{order.id}}">Show Details</a>
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+            </div><!-- /.card-body -->
+          </div>
+          <div class="card shadow">
+            <div class="card-header">
+              <h3 class="card-title">
+                <i class="fa-light fa-chart-bar mr-1"></i>
+                Các tập truyện sắp bán hết
+              </h3>
+              <div class="card-tools">
+                <a routerLink="/statistical/out-of-stock" class="text-black me-2">Xem tất cả</a>
+              </div>
+            </div>
+            <div class="card-body table-responsive p-0">
+              <table class="table">
+                <thead>
+                <tr>
+                  <th scope="col">ID tập truyện</th>
+                  <th scope="col">Tên truyện</th>
+                  <th scope="col">Tên tập truyện</th>
+                  <th scope="col">Số lượng còn lại</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let book of outOfStock">
+                  <td class="align-middle">{{book.options[0].id}}</td>
+                  <td class="align-middle">{{book.name}}</td>
+                  <td class="align-middle">{{book.options[0].name}}</td>
+                  <td class="align-middle">{{book.options[0].quantity}}</td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+        <section class="col-lg-6">
+          <div class="card shadow">
+            <div class="card-header">
+              <h3 class="card-title">
+                <i class="fa-light fa-chart-bar mr-1"></i>
+                Doanh thu 7 ngày qua
+              </h3>
+              <div class="card-tools"></div>
+            </div>
+            <div class="card-body p-0">
+              <div class="row">
+                <div class="col">
+                  <div class="w-75 mx-auto my-3">
+                    <div class="chart p-3">
+                      <canvas id="chart-by-week"></canvas>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card shadow">
+            <div class="card-header">
+              <h3 class="card-title">
+                <i class="fa-light fa-chart-bar mr-1"></i>
+                Doanh thu theo danh mục
+              </h3>
+              <div class="card-tools"></div>
+            </div>
+            <div class="card-body p-0">
+              <div class="row">
+                <div class="col">
+                  <div class="w-75 mx-auto my-3">
+                    <div class="chart p-3">
+                      <canvas id="chart-by-category"></canvas>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </section>
+</div>
+

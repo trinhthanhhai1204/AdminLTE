@@ -1,0 +1,161 @@
+<div class="content-wrapper">
+  <div class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1 class="m-0">User</h1>
+        </div>
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a routerLink="/">Home</a></li>
+            <li class="breadcrumb-item active"><a routerLink="/user/customers">Customers</a></li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+  <section class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12">
+          <div class="card shadow" id="book-table">
+            <div class="card-header">
+              <h3 class="card-title">
+                <i class="fa-light fa-chart-bar mr-1"></i>
+                Customers
+              </h3>
+              <div class="card-tools">
+                <div class="w-auto">
+                  <label for="sort-selector"></label>
+                  <select (change)="onSortChange()" [(ngModel)]="sort" class="p-1 ml-1" id="sort-selector">
+                    <option value="0">Default Sorting</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="card-body p-0">
+              <div class="row my-3">
+                <div class="col-12">
+                  <div class="mx-3">
+                    <a class="btn btn-outline-primary px-3" routerLink="/user/add-customer" type="button">Add Customer</a>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-12">
+                  <div class="table-responsive">
+                    <table class="table table-hover table-bordered text-nowrap align-middle">
+                      <thead>
+                      <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Tên người dùng</th>
+                        <th scope="col">Tên khách hàng</th>
+                        <th scope="col">Avatar</th>
+                        <th scope="col">Số điện thoại</th>
+                        <th scope="col">Is deleted</th>
+                        <th colspan="4" scope="col">Action</th>
+                      </tr>
+                      </thead>
+                      <tbody>
+                      <tr *ngFor="let customer of customers">
+                        <td class="align-middle">{{ customer.id }}.</td>
+                        <td class="align-middle">{{ customer.username }}</td>
+                        <td class="align-middle">{{ customer.name }}</td>
+                        <td class="align-middle">
+                          <img [src]="customer.image" alt=""
+                               class="object-fit-cover" style="border-radius: 50%">
+                        </td>
+                        <td class="align-middle">{{ customer.phone }}</td>
+                        <td class="align-middle">
+                          @switch (customer.deleted) {
+                            @case (true) {
+                              <span class='badge bg-danger'>TRUE</span>
+                            }
+                            @case (false) {
+                              <span class='badge bg-success'>FALSE</span>
+                            }
+                          }
+                        </td>
+                        <td class="align-middle">
+                          <a routerLink="/user/customer-details/{{customer.id}}">Show Details</a>
+                        </td>
+                        <td class="align-middle">
+                          <a routerLink="/orders-by-customer/{{customer.id}}">Show Orders</a>
+                        </td>
+                        <td class="align-middle">
+                          <a routerLink="/user/update-user/{{customer.id}}">Edit</a>
+                        </td>
+                        <td class="align-middle">
+                          <a (click)="onDeleteCustomerRequest(customer.id)" class="cursor-pointer" data-bs-target="#modal"
+                             data-bs-toggle="modal">Delete</a>
+                        </td>
+                      </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-12">
+                  <div class="modal fade"
+                       id="modal"
+                       data-bs-backdrop="static"
+                       data-bs-keyboard="true"
+                       tabindex="-1">
+                    <div class="modal-dialog modal-dialog-centered">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h1 class="modal-title fs-5">Modal</h1>
+                          <button type="button"
+                                  class="btn-close"
+                                  data-bs-dismiss="modal">
+                          </button>
+                        </div>
+                        <div class="modal-body">
+                          <p>Bạn có chắc chắn muốn xoá khách hàng có ID {{deleteRequestId}}?</p>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                          <button type="button"
+                                  class="btn btn-primary"
+                                  data-bs-dismiss="modal"
+                                  (click)="onDeleteCustomer()">
+                            Save changes
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card-footer">
+              <div class="row">
+                <div class="col-sm-12 col-md-5" id="">
+                  <p>Showing {{ page * size + 1 }} to {{ Math.min(page * size + size, count) }} of {{ count }}
+                    entries</p>
+                </div>
+                <div class="col-sm-12 col-md-7">
+                  <ul class="pagination justify-content-end">
+                    <li (click)="onPrevClick()" [ngClass]="{'disabled': page == 0}"
+                        class="paginate_button page-item previous">
+                      <a class="page-link cursor-pointer">Previous</a>
+                    </li>
+                    <li (click)="setPage(i - 1)" *ngFor="let i of pagesSequence"
+                        [ngClass]="{'active': page === i - 1}" class="paginate_button page-item active">
+                      <a class="page-link cursor-pointer">{{ i }}</a>
+                    </li>
+                    <li (click)="onNextClick()" [ngClass]="{'disabled': page == pages - 1}"
+                        class="paginate_button page-item next">
+                      <a class="page-link cursor-pointer">Next</a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

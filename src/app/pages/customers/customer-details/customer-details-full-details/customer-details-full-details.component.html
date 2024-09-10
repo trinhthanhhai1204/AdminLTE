@@ -1,0 +1,46 @@
+<div class="row">
+  <div class="col-12">
+    <table class="table table-borderless">
+      <tbody>
+      <tr>
+        <td><b>Tên người dùng</b></td>
+        <td>{{customer.username}}</td>
+      </tr>
+      <tr>
+        <td><b>Tên</b></td>
+        <td>{{customer.name}}</td>
+      </tr>
+      <tr>
+        <td><b>Giới tính</b></td>
+        <td>
+          @switch (customer.gender) {
+            @case ("male") {
+              Nam
+            }
+            @case ("female") {
+              Nữ
+            }
+          }
+        </td>
+      </tr>
+      <tr>
+        <td><b>Số điện thoại</b></td>
+        <td>{{customer.phone | phoneNumber}}</td>
+      </tr>
+      <tr>
+        <td><b>Ngày sinh</b></td>
+        <td>{{customer.birthday | date}}</td>
+      </tr>
+      <tr>
+        <td><b>Địa chỉ</b></td>
+        <td>{{addressRender}}</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+  @if (canUpdateUser) {
+    <div class="col-12">
+      <a type="button" class="btn btn-primary" routerLink="/user/update-user/{{customer.id}}">Update User</a>
+    </div>
+  }
+</div>

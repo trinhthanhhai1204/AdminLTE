@@ -1,0 +1,80 @@
+<div class="content-wrapper">
+  <div class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1 class="m-0">Tables</h1>
+        </div>
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a routerLink="/">Home</a></li>
+            <li class="breadcrumb-item"><a routerLink="/categories">Categories</a></li>
+            <li class="breadcrumb-item active"><a routerLink="/add-categories">Add Categories</a></li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+  <section class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12">
+          <div class="card shadow" id="book-table">
+            <div class="card-header">
+              <h3 class="card-title">
+                <i class="fa-light fa-chart-bar mr-1"></i>
+                Add Categories
+              </h3>
+              <div class="card-tools"></div>
+            </div>
+            <div class="card-body">
+              <form #addCategories="ngForm"
+                    class="needs-validation"
+                    novalidate
+                    [ngClass]="{'was-validated': wasValidated}">
+                <div class="row">
+                  <div class="col-12 col-sm-6">
+                    <div class="row">
+                      <div class="col-12">
+                        <label>Ảnh</label>
+                      </div>
+                      <div class="col-3 my-2">
+                        <input class="form-control d-none"
+                               type="file"
+                               id="imageForm"
+                               (change)="onChangeImage($event)"
+                        >
+                        <div class="w-100">
+                          <label for="imageForm" class="d-block ratio ratio-1x1">
+                            <img class="object-fit-cover" [src]="image" alt="">
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-12">
+                        <div class="form-group">
+                          <label>Tên danh mục</label>
+                          <input class="form-control"
+                                 name="name"
+                                 placeholder="Nhập tên danh mục..."
+                                 type="text"
+                                 [(ngModel)]="name"
+                                 required
+                          >
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+            <div class="card-footer">
+              <button type="submit" class="btn btn-primary" (click)="onAddCategories(addCategories)">Thêm danh mục</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

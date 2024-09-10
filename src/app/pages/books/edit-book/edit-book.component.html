@@ -1,0 +1,160 @@
+<div class="content-wrapper">
+  <div class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1 class="m-0">Tables</h1>
+        </div>
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a routerLink="/">Home</a></li>
+            <li class="breadcrumb-item"><a routerLink="/books">Books</a></li>
+            @if (id) {
+              <li class="breadcrumb-item active"><a routerLink="/edit-book/{{id}}">Update Book</a></li>
+            }
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+  <section class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12">
+          <div class="card shadow" id="book-table">
+            <div class="card-header">
+              <h3 class="card-title">
+                <i class="fa-light fa-chart-bar mr-1"></i>
+                Update Book
+              </h3>
+              <div class="card-tools"></div>
+            </div>
+            <div class="card-body">
+              <form #editBook="ngForm"
+                    class="needs-validation"
+                    novalidate
+                    [ngClass]="{'was-validated': wasValidated}">
+                <div class="row">
+                  <div class="col-12 col-sm-6">
+                    <div class="row">
+                      <div class="col-12">
+                        <label>Ảnh</label>
+                      </div>
+                      <div class="col-3 my-2">
+                        <input class="form-control d-none"
+                               type="file"
+                               id="imageForm"
+                               (change)="onChangeImage($event)"
+                        >
+                        <div class="w-100">
+                          <label for="imageForm" class="d-block ratio ratio-1x1">
+                            @if (image) {
+                              <img class="object-fit-cover" [src]="image" alt="">
+                            }
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-12">
+                        <div class="form-group">
+                          <label>Tên sách</label>
+                          <input [(ngModel)]="name"
+                                 class="form-control"
+                                 name="name"
+                                 placeholder="Nhập tên sách..."
+                                 type="text"
+                                 required
+                          >
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-12">
+                        <div class="form-group">
+                          <label>Giá</label>
+                          <input [(ngModel)]="price"
+                                 class="form-control"
+                                 min="0"
+                                 name="price"
+                                 placeholder="Nhập giá sách..."
+                                 type="number"
+                                 value="0"
+                                 required
+                          >
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-12">
+                        <div class="form-group">
+                          <label>Giới thiệu</label>
+                          <textarea [(ngModel)]="description"
+                                    class="form-control"
+                                    name="description"
+                                    placeholder="Nhập giới thiệu..."
+                                    rows="3"
+                          ></textarea>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-12 col-sm-6">
+                    <div class="row">
+                      <div class="col-12">
+                        <div class="form-group">
+                          <label>Danh mục</label>
+                          <div class="accordion" id="selectCategories">
+                            <div class="accordion-item">
+                              <h2 class="accordion-header">
+                                <button aria-controls="categoriesCollapse" aria-expanded="false" class="accordion-button collapsed py-2"
+                                        data-bs-target="#categoriesCollapse" data-bs-toggle="collapse"
+                                        type="button">
+                                  Chọn danh mục
+                                </button>
+                              </h2>
+                              <div class="accordion-collapse collapse" data-bs-parent="#selectCategories"
+                                   id="categoriesCollapse">
+                                <div class="accordion-body">
+                                  <div class="w-100 mb-2 mx-1">
+                                    <input (input)="onUpdateCheckboxShow()"
+                                           [(ngModel)]="search"
+                                           class="form-control"
+                                           name="search"
+                                           placeholder="Tìm kiếm danh mục"
+                                           type="text"
+                                    >
+                                  </div>
+                                  <div *ngFor="let data of categoriesShow" class="mx-1 d-inline-block">
+                                    <input (change)="onCategoryChange($event)"
+                                           [checked]="data.selected"
+                                           class="btn-check"
+                                           id="btn-check-{{data.id}}"
+                                           name="categories2"
+                                           type="checkbox"
+                                           value="{{data.id}}"
+                                    >
+                                    <label class="btn font-weight-normal"
+                                           for="btn-check-{{data.id}}">{{ data.name }}
+                                    </label>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+            <div class="card-footer">
+              <button (click)="onEditBook(editBook)" class="btn btn-primary" type="submit">Cập nhật</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

@@ -1,0 +1,107 @@
+<div class="card shadow">
+  <div class="card-header">
+    <h3 class="card-title">
+      <i class="fa-light fa-chart-bar mr-1"></i>
+      Options
+    </h3>
+    <div class="card-tools"></div>
+  </div>
+  <div class="card-body">
+    <div class="row justify-content-center">
+      <div class="col-12 col-lg-8">
+        <div class="row my-3">
+          <div class="col-12">
+            <div>
+              <a type="button" class="btn btn-outline-primary px-3" routerLink="/add-option" [queryParams]="{id: bookId}">Add Option</a>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <table class="table table-hover table-bordered align-middle">
+              <thead>
+              <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Name</th>
+                <th scope="col">Image</th>
+                <th scope="col">Quantity</th>
+                <th scope="col" colspan="3">Action</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr *ngFor="let option of options">
+                <td>{{option.id}}</td>
+                <td>{{option.name}}</td>
+                <td><img class="object-fit-cover" [src]="option.image" alt=""></td>
+                <td>{{option.quantity}}</td>
+                <td>
+                  <a routerLink="/">View Details</a>
+                </td>
+                <td>
+                  <a routerLink="/edit-option/{{option.id}}">Edit</a>
+                </td>
+                <td>
+                  <a class="cursor-pointer" data-bs-toggle="modal" data-bs-target="#modal" (click)="onDeleteOptionRequest(option.id)">Delete</a>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <div class="modal fade"
+                 id="modal"
+                 data-bs-backdrop="static"
+                 data-bs-keyboard="true"
+                 tabindex="-1">
+              <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="modalLabel">Modal</h1>
+                    <button type="button"
+                            class="btn-close"
+                            data-bs-dismiss="modal">
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <p>Bạn có chắc chắn muốn xoá danh mục có ID {{deleteRequestId}}?</p>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button"
+                            class="btn btn-primary"
+                            data-bs-dismiss="modal"
+                            (click)="onDeleteOption()">
+                      Save changes
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card-footer">
+    <div class="row">
+      <div class="col-sm-12 col-md-5" id="">
+        <p>Showing {{page * size + 1}} to {{Math.min(page * size + size, count)}} of {{count}} entries</p>
+      </div>
+      <div class="col-sm-12 col-md-7">
+        <ul class="pagination justify-content-end">
+          <li class="paginate_button page-item previous" (click)="onPrevClick()" [ngClass]="{'disabled': page == 0}">
+            <a class="page-link cursor-pointer">Previous</a>
+          </li>
+          <li *ngFor="let i of pagesSequence" class="paginate_button page-item active" [ngClass]="{'active': page === i - 1}" (click)="setPage(i - 1)">
+            <a class="page-link cursor-pointer">{{i}}</a>
+          </li>
+          <li class="paginate_button page-item next" (click)="onNextClick()" [ngClass]="{'disabled': page == pages - 1}">
+            <a class="page-link cursor-pointer">Next</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

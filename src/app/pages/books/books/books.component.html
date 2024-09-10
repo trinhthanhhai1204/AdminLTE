@@ -1,0 +1,159 @@
+<div class="content-wrapper">
+  <div class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1 class="m-0">Tables</h1>
+        </div>
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a routerLink="/">Home</a></li>
+            <li class="breadcrumb-item active"><a routerLink="/books">Books</a></li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+  <section class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12">
+          <div id="book-table" class="card shadow">
+            <div class="card-header">
+              <h3 class="card-title">
+                <i class="fa-light fa-chart-bar mr-1"></i>
+                Books
+              </h3>
+              <div class="card-tools">
+                <div class="w-auto">
+                  <label for="category-selector"></label>
+                  <select class="p-1 ml-1" id="category-selector" [(ngModel)]="category" (change)="onCategoryChange()">
+                    <option value="0">Select Category</option>
+                    <option *ngFor="let category of categories" [value]="category.id">{{category.name}}</option>
+                  </select>
+                  <label for="sort-selector"></label>
+                  <select class="p-1 ml-1" id="sort-selector" [(ngModel)]="sort" (change)="onSortChange()">
+                    <option value="0">Default Sorting</option>
+                    <option value="1">Mới nhất</option>
+                    <option value="2">Cũ nhất</option>
+                    <option value="3">Đắt nhất</option>
+                    <option value="4">Rẻ nhất</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="card-body p-0">
+              <div class="row my-3">
+                <div class="col-12">
+                  <div class="mx-3">
+                    <a type="button" class="btn btn-outline-primary px-3" routerLink="/add-book">Add Book</a>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-12">
+                  <table class="table table-hover table-bordered align-middle">
+                    <thead>
+                    <tr>
+                      <th scope="col">#</th>
+                      <th scope="col">Name</th>
+                      <th scope="col">Image</th>
+                      <th scope="col">Price</th>
+                      <th scope="col">Is Deleted</th>
+                      <th scope="col" colspan="3">Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let book of books">
+                      <td>{{book.id}}.</td>
+                      <td>{{book.name}}</td>
+                      <td><img class="object-fit-cover" [src]="book.image" alt=""></td>
+                      <td>{{book.price | vndCurrency}} đồng</td>
+                      <td>
+                        @switch (book.deleted) {
+                          @case (true) {
+                            <span class='badge bg-danger'>TRUE</span>
+                          }
+                          @case (false) {
+                            <span class='badge bg-success'>FALSE</span>
+                          }
+                        }
+                      </td>
+                      <td>
+                        <a routerLink="/books/{{book.id}}">View Details</a>
+                      </td>
+                      <td>
+                        <a routerLink="/edit-book/{{book.id}}">Edit</a>
+                      </td>
+                      <td>
+                        <a class="cursor-pointer" data-bs-toggle="modal" data-bs-target="#modal" (click)="onDeleteBookRequest(book.id)">Delete</a>
+                      </td>
+                    </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-12">
+                  <div class="modal fade"
+                       id="modal"
+                       data-bs-backdrop="static"
+                       data-bs-keyboard="true"
+                       tabindex="-1">
+                    <div class="modal-dialog modal-dialog-centered">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h1 class="modal-title fs-5">Xoá sách</h1>
+                          <button type="button"
+                                  class="btn-close"
+                                  data-bs-dismiss="modal">
+                          </button>
+                        </div>
+                        <div class="modal-body">
+                          @if (deleteRequestType) {
+                            <p>Bạn có chắc chắn muốn xoá sách có ID {{deleteRequestId}}?</p>
+                          } @else {
+                            <p>Bạn có chắc chắn muốn khôi phục sách có ID {{deleteRequestId}}?</p>
+                          }
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                          <button type="button"
+                                  class="btn btn-primary"
+                                  data-bs-dismiss="modal"
+                                  (click)="onDeleteBook()">
+                            Save changes
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card-footer">
+              <div class="row">
+                <div class="col-sm-12 col-md-5" id="">
+                  <p>Showing {{page * size + 1}} to {{Math.min(page * size + size, count)}} of {{count}} entries</p>
+                </div>
+                <div class="col-sm-12 col-md-7">
+                  <ul class="pagination justify-content-end">
+                    <li class="paginate_button page-item previous" (click)="onPrevClick()" [ngClass]="{'disabled': page == 0}">
+                      <a class="page-link cursor-pointer">Previous</a>
+                    </li>
+                    <li *ngFor="let i of pagesSequence" class="paginate_button page-item active" [ngClass]="{'active': page === i - 1}" (click)="setPage(i - 1)">
+                      <a class="page-link cursor-pointer">{{i}}</a>
+                    </li>
+                    <li class="paginate_button page-item next" (click)="onNextClick()" [ngClass]="{'disabled': page == pages - 1}">
+                      <a class="page-link cursor-pointer">Next</a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

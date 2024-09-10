@@ -1,0 +1,73 @@
+<div class="content-wrapper">
+  <div class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1 class="m-0">Thống kê</h1>
+        </div>
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a routerLink="/">Home</a></li>
+            <li class="breadcrumb-item"><a routerLink="/statistical/revenues/monthly">Doanh thu theo tháng</a></li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+  <section class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12">
+          <div id="book-table" class="card shadow">
+            <div class="card-header">
+              <h3 class="card-title">
+                <i class="fa-light fa-chart-bar mr-1"></i>
+                Doanh thu theo tháng
+              </h3>
+              <div class="card-tools">
+                <div class="d-flex">
+                  <label for="month" class="d-none"></label>
+                  <input class="px-2 py-1 my-0 mx-2" type="number" [(ngModel)]="month" id="month" min="1" max="{{maxMonth}}" (change)="onMonthChange($event)">
+                  <label for="year" class="d-none"></label>
+                  <input class="px-2 py-1 my-0 mx-2" type="number" [(ngModel)]="year" id="year" min="2019" max="{{currentYear}}" (change)="onYearChange($event)">
+                  <button type="button" class="btn btn-outline-warning btn-block px-4 w-auto" (click)="onUpdateChart()">
+                    <i class="fa-thin fa-search font-weight-light"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="card-body p-0">
+              <div class="row">
+                <div class="col-12">
+                  <table class="table table-hover table-bordered align-middle">
+                    <thead>
+                    <tr>
+                      <th scope="col">Ngày</th>
+                      <th scope="col">Tổng doanh thu</th>
+                      <th scope="col">Chi tiết</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let row of data">
+                      <td>{{row.date}}</td>
+                      <td>{{row.revenue | vndCurrency}} đồng</td>
+                      <td><a routerLink="/statistical/revenues/date" [queryParams]="{date: row.date}">Show Details</a></td>
+                    </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+            <div class="card-footer">
+              <div class="row">
+                <div class="col-12">
+                  <p>Tổng doanh thu: {{sum | vndCurrency}} đồng</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

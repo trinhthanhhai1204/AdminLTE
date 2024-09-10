@@ -1,0 +1,251 @@
+<div class="content-wrapper">
+  <div class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1 class="m-0">Order Details</h1>
+        </div>
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item">
+              <a routerLink="/">Home</a>
+            </li>
+            <li class="breadcrumb-item active">
+              <a routerLink="/orders">Orders</a>
+            </li>
+            @if (orderId) {
+              <li class="breadcrumb-item active">
+                <a routerLink="/order-details/{{orderId}}">Order Details</a>
+              </li>
+            }
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+  <section class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12">
+          <div id="book-table" class="card shadow">
+            <div class="card-header">
+              <h3 class="card-title">
+                <i class="fa-light fa-chart-bar mr-1"></i>
+                Order Details
+              </h3>
+              <div class="card-tools"></div>
+            </div>
+            <div class="card-body table-responsive p-0">
+              <table class="table table-hover text-nowrap align-middle">
+                <thead>
+                <tr>
+                  <th scope="col">Product ID</th>
+                  <th scope="col">Product</th>
+                  <th scope="col">Product Image</th>
+                  <th scope="col">Option ID</th>
+                  <th scope="col">Option name</th>
+                  <th scope="col">Option image</th>
+                  <th scope="col">Quantity in storage</th>
+                  <th scope="col">Quantity</th>
+                  <th scope="col">Price/Product</th>
+                  <th scope="col">Sub Total</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let orderDetail of orderDetails">
+                  <td class="align-middle">{{orderDetail.option.book.id}}.</td>
+                  <td class="align-middle">{{orderDetail.option.book.name}}</td>
+                  <td class="align-middle"><img class="object-fit-cover" [src]="orderDetail.option.book.image" alt=""></td>
+                  <td class="align-middle">{{orderDetail.option.id}}</td>
+                  <td class="align-middle">{{orderDetail.option.name}}</td>
+                  <td class="align-middle"><img class="object-fit-cover" [src]="orderDetail.option.image" alt=""></td>
+                  <td class="align-middle">{{orderDetail.option.quantity}}</td>
+                  <td class="align-middle">{{orderDetail.quantity}}</td>
+                  <td class="align-middle">{{orderDetail.option.book.price | vndCurrency}} đồng</td>
+                  <td class="align-middle">{{orderDetail.price | vndCurrency}} đồng</td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="card-footer">
+              <div class="row">
+                <div class="col-sm-12 col-md-5" id="">
+                  <p>Showing {{count}} to {{count}} of {{count}} entries</p>
+                </div>
+                <div class="col-sm-12 col-md-7"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      @if (order) {
+        <div class="row">
+          <div class="col-12">
+            <div class="card shadow">
+              <div class="card-header">
+                <h3 class="card-title">
+                  <i class="fa-light fa-chart-bar mr-1"></i>
+                  Order Details
+                </h3>
+                <div class="card-tools"></div>
+              </div>
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-6">
+                    <p class="d-block mb-0 fs-3 fw-light">Địa chỉ nhận hàng</p>
+                    <p class="d-block mb-0">{{order.consigneeName}}</p>
+                    <i class="d-block text-black-50">{{order.phone}}</i>
+                    @if (order.ward) {
+                      <i class="d-block text-black-50">{{order.ward.fullName}} - {{order.district.fullName}} - {{order.province.fullName}}</i>
+                    }
+                    <i class="d-block text-black-50">{{order.address}}</i>
+                  </div>
+                  <div class="col-6">
+                    <div class="row">
+                      <div class="col-12">
+                        <div class="w-100 d-flex justify-content-end">
+                          <strong class="text-end mb-0">
+                            @switch (order.orderStatus) {
+                              @case ("WAIT_FOR_PAY") {
+                                Chờ thanh toán...
+                              }
+                              @case ("PREPARING") {
+                                Đơn hàng đang được chuẩn bị...
+                              }
+                              @case ("PENDING") {
+                                Đặt hàng thành công!
+                              }
+                              @case ("SHIPPING") {
+                                Đang giao hàng...
+                              }
+                              @case ("SUCCESS") {
+                                Giao hàng thành công!
+                              }
+                              @case ("DECLINED") {
+                                Đơn hàng đã huỷ
+                              }
+                            }
+                          </strong>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <div class="card shadow">
+              <div class="card-header">
+                <h3 class="card-title">
+                  <i class="fa-light fa-chart-bar mr-1"></i>
+                  Order Details
+                </h3>
+                <div class="card-tools"></div>
+              </div>
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-6">
+                    <p class="d-block mb-0 fw-light fs-5">Phương thức thanh toán:
+                      <span class="fw-normal">
+                        @switch (order.paymentMethod) {
+                          @case ("BANK") {
+                            Chuyển khoản
+                          }
+                          @case ("MONEY") {
+                            Tiền mặt
+                          }
+                        }
+                      </span>
+                    </p>
+                    <p class="fw-light mb-0">Mã đơn hàng: <span class="fw-normal">{{order.id}}</span></p>
+                    <p class="fw-light mb-0">Tài khoản tạo đơn: <span class="fw-normal">{{order.customer.username}}</span></p>
+                    <p class="fw-light mb-0">Ngày tạo đơn: <span class="fw-normal">{{order.createAt | date:'HH:mm dd/MM/y'}}</span></p>
+                    <strong>
+                      @if (order.orderStatus === "WAIT_FOR_PAY") {
+                        Chờ thanh toán...
+                      }
+                      @else {
+                        Đã thanh toán!
+                      }
+                    </strong>
+                  </div>
+                  <div class="col-6 d-flex justify-content-end">
+                    <table class="table table-borderless w-auto mb-0">
+                      <tbody>
+                      <tr>
+                        <td class="px-4 py-2">
+                          <p class="mb-0">Tổng tiền hàng</p>
+                        </td>
+                        <td class="px-4 py-2">
+                          <p class="mb-0 fw-bold text-end">{{totalPrice | vndCurrency}} đồng</p>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="px-4 py-2">
+                          <p class="mb-0">Phí vận chuyển</p>
+                        </td>
+                        <td class="px-4 py-2">
+                          <p class="mb-0 fw-bold text-end">0 đồng</p>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="px-4 py-2">
+                          <p class="mb-0">Thành tiền</p>
+                        </td>
+                        <td class="px-4 py-2">
+                          <p class="mb-0 fw-bold text-end">{{totalPrice | vndCurrency}} đồng</p>
+                        </td>
+                      </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+              <div class="card-footer">
+                <div class="row">
+                  <div class="col-12">
+                    <div class="w-100 d-flex justify-content-end">
+                      @switch (order.orderStatus) {
+                        @case ("WAIT_FOR_PAY") {
+                          <button type="button"
+                                  class='btn btn-danger'
+                                  (click)="onChangeOrderStatus(order.id, 5)">
+                            Huỷ đơn hàng
+                          </button>
+                        }
+                        @case ("PENDING") {
+                          <button type="button"
+                                  class='btn btn-warning'
+                                  (click)="onChangeOrderStatus(order.id, 2)">
+                            Xác nhận đơn hàng
+                          </button>
+                        }
+                        @case ("PREPARING") {
+                          <button type="button"
+                                  class='btn btn-primary'
+                                  (click)="onChangeOrderStatus(order.id, 3)">
+                            Giao hàng
+                          </button>
+                        }
+                        @case ("SHIPPING") {
+                          <button type="button"
+                                  class='btn btn-success'
+                                  (click)="onChangeOrderStatus(order.id, 4)">
+                            Đã nhận được hàng
+                          </button>
+                        }
+                      }
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  </section>
+</div>

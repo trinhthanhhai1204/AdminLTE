@@ -1,0 +1,171 @@
+<div class="content-wrapper">
+  <div class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1 class="m-0">Orders By Customer</h1>
+        </div>
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a routerLink="/">Home</a></li>
+            <li class="breadcrumb-item"><a routerLink="/orders">Orders</a></li>
+            @if (customerId) {
+              <li class="breadcrumb-item"><a routerLink="/orders-by-customer/{{customerId}}">Orders By Customer</a></li>
+            } @else {
+              <li class="breadcrumb-item"><a routerLink="/orders-by-customer">Orders By Customer</a></li>
+            }
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+  <section class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12">
+          <div class="card shadow" id="book-table">
+            <div class="card-header">
+              <h3 class="card-title">
+                <i class="fa-light fa-chart-bar mr-1"></i>
+                @if (customerId) {
+                  <span>Orders By Customer ID: {{ customerId }}</span>
+                } @else {
+                  <span>Orders By Customer</span>
+                }
+              </h3>
+              <div class="card-tools">
+                <div class="w-auto">
+                  <label for="status-selector"></label>
+                  <select (change)="onStatusChange()" [(ngModel)]="status" class="p-1 ml-1" id="status-selector">
+                    <option value="">All</option>
+                    <option *ngFor="let orderStatus of orderStatusList"
+                            [value]="orderStatus.index">{{ orderStatus.name }}
+                    </option>
+                  </select>
+                  <label for="sort-selector"></label>
+                  <select (change)="onSortChange()" [(ngModel)]="sort" class="p-1 ml-1" id="sort-selector">
+                    <option value="0">Default Sorting</option>
+                    <option value="1">Cũ nhất</option>
+                    <option value="2">Mới nhất</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="card-body p-0">
+              <div class="row">
+                <div class="col-12">
+                  <div class="table-responsive">
+                    <table class="table table-hover table-bordered text-nowrap align-middle">
+                      <thead>
+                      <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Consignee Name</th>
+                        <th scope="col">Phone</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Create At</th>
+                        <th scope="col">Finished At</th>
+                        <th scope="col">Show Details</th>
+                        <th scope="col">Change Status</th>
+                      </tr>
+                      </thead>
+                      <tbody>
+                      <tr *ngFor="let order of orders">
+                        <td class="align-middle">{{ order.id }}.</td>
+                        <td class="align-middle">{{ order.consigneeName }}</td>
+                        <td class="align-middle">{{ order.phone }}</td>
+                        <td class="align-middle">
+                          @switch (order.orderStatus) {
+                            @case ("PENDING") {
+                              <span class='badge bg-warning'>Đặt hàng thành công!</span>
+                            }
+                            @case ("WAIT_FOR_PAY") {
+                              <span class='badge bg-warning'>Chờ thanh toán...</span>
+                            }
+                            @case ("PREPARING") {
+                              <span class='badge bg-warning'>Đơn hàng đang được chuẩn bị...</span>
+                            }
+                            @case ("SHIPPING") {
+                              <span class='badge bg-primary'>Đang giao hàng...</span>
+                            }
+                            @case ("SUCCESS") {
+                              <span class='badge bg-success'>Giao hàng thành công!</span>
+                            }
+                            @case ("DECLINED") {
+                              <span class='badge bg-danger'>Đơn hàng đã huỷ</span>
+                            }
+                          }
+                        </td>
+                        <td class="align-middle">{{ order.createAt | date: "dd/MM/y hh:mm" }}</td>
+                        <td class="align-middle">{{ order.finishedAt | date: "dd/MM/y hh:mm" }}</td>
+                        <td class="align-middle">
+                          <a routerLink="/order-details/{{order.id}}">Show Details</a>
+                        </td>
+                        <td class="align-middle">
+                          @switch (order.orderStatus) {
+                            @case ("WAIT_FOR_PAY") {
+                              <button type="button"
+                                      class='btn btn-danger'
+                                      (click)="onChangeOrderStatus(order.id, 5)">
+                                Huỷ đơn hàng
+                              </button>
+                            }
+                            @case ("PENDING") {
+                              <button type="button"
+                                      class='btn btn-warning'
+                                      (click)="onChangeOrderStatus(order.id, 2)">
+                                Xác nhận đơn hàng
+                              </button>
+                            }
+                            @case ("PREPARING") {
+                              <button type="button"
+                                      class='btn btn-primary'
+                                      (click)="onChangeOrderStatus(order.id, 3)">
+                                Giao hàng
+                              </button>
+                            }
+                            @case ("SHIPPING") {
+                              <button type="button"
+                                      class='btn btn-success'
+                                      (click)="onChangeOrderStatus(order.id, 4)">
+                                Đã nhận được hàng
+                              </button>
+                            }
+                          }
+                        </td>
+                      </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card-footer">
+              <div class="row">
+                <div class="col-sm-12 col-md-5" id="">
+                  <p>Showing {{ page * size + 1 }} to {{ Math.min(page * size + size, count) }} of {{ count }}
+                    entries</p>
+                </div>
+                <div class="col-sm-12 col-md-7">
+                  <ul class="pagination justify-content-end">
+                    <li (click)="onPrevClick()" [ngClass]="{'disabled': page == 0}"
+                        class="paginate_button page-item previous">
+                      <a class="page-link cursor-pointer">Previous</a>
+                    </li>
+                    <li (click)="setPage(i - 1)" *ngFor="let i of pagesSequence"
+                        [ngClass]="{'active': page === i - 1}" class="paginate_button page-item active">
+                      <a class="page-link cursor-pointer">{{ i }}</a>
+                    </li>
+                    <li (click)="onNextClick()" [ngClass]="{'disabled': page == pages - 1}"
+                        class="paginate_button page-item next">
+                      <a class="page-link cursor-pointer">Next</a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

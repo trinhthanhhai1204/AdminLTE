@@ -1,0 +1,61 @@
+:root {
+    --bs-black: #000;
+    --bs-orange: #fd7e14;
+}
+
+a {
+    color: var(--bs-black);
+    text-decoration: none;
+}
+
+table img {
+    width: 4rem;
+    height: 4rem;
+    object-fit: cover;
+}
+
+.carousel-item {
+  transition-duration: 1s;
+}
+
+.transition {
+  transition: 0.25s ease-in-out !important;
+}
+
+.product-detail-categories a:hover {
+    color: var(--bs-orange) !important;
+}
+.product-detail-categories a:nth-last-child(n + 2)::after {
+    color: var(--bs-black);
+    content: ", ";
+}
+
+#todayFeatured .carousel-item .row div:first-child img {
+    border-radius: 50%;
+}
+
+.nav-pills button.nav-link:not(.active) {
+  color: #ffc107;
+}
+
+.nav-pills button.nav-link:not(.active):hover {
+  color: #1f2d3d;
+}
+
+.cursor-pointer {
+  cursor: pointer !important;
+}
+
+.user-panel img {
+  width: 3rem;
+  height: 3rem;
+  object-fit: cover;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.profile-user-img {
+  width: 6.25rem;
+  height: 6.25rem;
+  object-fit: cover;
+}

@@ -1,0 +1,78 @@
+<div class="content-wrapper">
+  <div class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1 class="m-0">Thống kê</h1>
+        </div>
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a routerLink="/">Home</a></li>
+            <li class="breadcrumb-item"><a routerLink="/statistical/out-of-stock">Tập truyện sắp hết</a></li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+  <section class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12">
+          <div id="book-table" class="card shadow">
+            <div class="card-header">
+              <h3 class="card-title">
+                <i class="fa-light fa-chart-bar mr-1"></i>
+                Tập truyện sắp hết
+              </h3>
+              <div class="card-tools">
+                <div class="w-auto"></div>
+              </div>
+            </div>
+            <div class="card-body p-0">
+              <div class="row">
+                <div class="col-12">
+                  <table class="table table-hover table-bordered align-middle">
+                    <thead>
+                    <tr>
+                      <th scope="col">ID truyện</th>
+                      <th scope="col">Tên truyện</th>
+                      <th scope="col">ID tập truyện</th>
+                      <th scope="col">Tên tập truyện</th>
+                      <th scope="col">Ảnh bìa tập truyện</th>
+                      <th scope="col">Số lượng còn lại</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let book of books">
+                      <td class="align-middle">{{book.id}}</td>
+                      <td class="align-middle">{{book.name}}</td>
+                      <td class="align-middle">{{book.options[0].id}}</td>
+                      <td class="align-middle">{{book.options[0].name}}</td>
+                      <td class="align-middle"><img class="object-fit-cover" [src]="book.options[0].image" alt=""></td>
+                      <td class="align-middle">{{book.options[0].quantity}}</td>
+                    </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+            <div class="card-footer">
+              <div class="row">
+                <div class="col-12">
+                  <ul class="pagination justify-content-end">
+                    <li class="paginate_button page-item previous" (click)="onPrevClick()" [ngClass]="{'disabled': page == 0}">
+                      <a class="page-link cursor-pointer">Previous</a>
+                    </li>
+                    <li class="paginate_button page-item next" (click)="onNextClick()" [ngClass]="{'disabled': books.length == 0}">
+                      <a class="page-link cursor-pointer">Next</a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

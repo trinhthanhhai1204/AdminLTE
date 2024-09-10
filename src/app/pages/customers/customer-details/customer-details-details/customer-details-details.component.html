@@ -1,0 +1,26 @@
+<div class="card card-primary">
+  <div class="card-header">
+    <h3 class="card-title">Thông tin</h3>
+  </div>
+  <div class="card-body">
+    <strong>
+      <i class="fas fa-user mr-1"></i>
+      Tên
+    </strong>
+    <p class="text-muted">{{customer.name}}</p>
+    <hr>
+    <strong>
+      <i class="fas fa-phone mr-1"></i>
+      Số điện thoại
+    </strong>
+    <p class="text-muted">{{customer.phone | phoneNumber}}</p>
+    @if (addressRender) {
+      <hr>
+      <strong>
+        <i class="fas fa-map-marker-alt mr-1"></i>
+        Địa chỉ
+      </strong>
+      <p class="text-muted">{{addressRender}}</p>
+    }
+  </div>
+</div>

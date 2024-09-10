@@ -1,0 +1,273 @@
+<div class="content-wrapper">
+  <div class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1 class="m-0">Tables</h1>
+        </div>
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a routerLink="/">Home</a></li>
+            <li class="breadcrumb-item active"><a routerLink="/books">Books</a></li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+  <section class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12">
+          <div class="card shadow">
+            <div class="card-header">
+              <h3 class="card-title">
+                <i class="fa-light fa-chart-bar mr-1"></i>
+                Book Details
+              </h3>
+              <div class="card-tools"></div>
+            </div>
+            <div class="card-body">
+              <div class="row justify-content-center my-3">
+                <div class="col-12 col-lg-8">
+                  <div class="row">
+                    <div class="col-12 col-md-6">
+                      <h3 class="d-inline-block d-sm-none">{{name}}</h3>
+                      <div class="col-12 mb-3">
+                        <div class="w-100 ratio ratio-1x1">
+                          <img class="object-fit-cover w-100" [src]="image" alt="">
+                        </div>
+                      </div>
+                      <div class="col-12 w-100 mb-3">
+                        <div id="book-details__small-image-list" class="carousel slide">
+                          <div class="carousel-inner">
+                            <div class="carousel-item" *ngFor="let carouselItem of carouselItems; index as i" [ngClass]="{'active': i == 0}">
+                              <div class="row">
+                                <div class="col-3" *ngFor="let image of carouselItem">
+                                  <div class="w-100 ratio ratio-1x1">
+                                    <img class="object-fit-cover" [src]="image" alt="" (click)="onChangeImage($event)">
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <button class="carousel-control-prev" type="button" data-bs-target="#book-details__small-image-list" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                          </button>
+                          <button class="carousel-control-next" type="button" data-bs-target="#book-details__small-image-list" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-12 col-md-6">
+                      <h1 class="fw-bold mb-3" id="book-details__name">{{name}}</h1>
+                      <h4 id="book-details__price">Giá: {{price | vndCurrency}} đồng</h4>
+                      <p class="product-detail-categories fs-6 fst-italic" id="book-details__categories">
+                        <span class="font-weight-bold">Categories: </span>
+                        <a class="transition cursor-pointer" *ngFor="let category of categories">{{category.name}}</a>
+                      </p>
+                      <p class="fs-6 font-italic" id="book-details__details">
+                        <span class="font-weight-bold">Description: </span>{{description}}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card-footer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <app-book-details-options [bookId]="id"></app-book-details-options>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <div class="card shadow">
+            <div class="card-header">
+              <h3 class="card-title">
+                <i class="fa-light fa-chart-bar mr-1"></i>
+                Images
+              </h3>
+              <div class="card-tools"></div>
+            </div>
+            <div class="card-body">
+              <div class="row justify-content-center">
+                <div class="col-12">
+                  <div class="row my-3">
+                    <div class="col-12">
+                      <div>
+                        <a type="button" class="btn btn-outline-primary px-3" data-bs-toggle="modal" data-bs-target="#add-image-modal">Add Images</a>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-12">
+                      <div class="row">
+                        <div class="col-2 my-2" *ngFor="let image of images">
+                          <div>
+                            <div class="w-100 ratio ratio-1x1">
+                              <img class="object-fit-cover" data-bs-toggle="dropdown" [src]="image.src" alt="">
+                              <div class="dropdown">
+                                <ul class="dropdown-menu">
+                                  <li>
+                                    <a class="dropdown-item cursor-pointer" data-bs-toggle="modal" data-bs-target="#open-image-modal" (click)="onViewImage(image.id)">View</a>
+                                  </li>
+                                  <li>
+                                    <a class="dropdown-item cursor-pointer" data-bs-toggle="modal" data-bs-target="#delete-image-modal" (click)="onDeleteImageRequest(image.id)">Delete</a>
+                                  </li>
+                                </ul>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-12">
+                      <div class="modal fade"
+                           id="add-image-modal"
+                           data-bs-backdrop="static"
+                           data-bs-keyboard="false"
+                           tabindex="-1"
+                      >
+                        <div class="modal-dialog modal-dialog-centered">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h1 class="modal-title fs-5">Add Images</h1>
+                              <button type="button"
+                                      class="btn-close"
+                                      data-bs-dismiss="modal"
+                                      (click)="onCloseAddImageAction()"
+                              >
+                              </button>
+                            </div>
+                            <div class="modal-body">
+                              <div class="w-100 mb-2 mx-1">
+                                <div class="row">
+                                  <div class="col-12">
+                                    <div class="mb-3">
+                                      <input class="form-control"
+                                             type="file"
+                                             id="imageFiles"
+                                             #imageFiles
+                                             multiple
+                                             (change)="onChangeImages($event)"
+                                      >
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="row">
+                                  <div class="col-3 my-2" *ngFor="let previewImage of base64List">
+                                    <div class="w-100 ratio ratio-1x1">
+                                      <img class="object-fit-cover" [src]="previewImage" alt="">
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button"
+                                      class="btn btn-secondary"
+                                      data-bs-dismiss="modal"
+                                      (click)="onCloseAddImageAction()"
+                              >
+                                Close
+                              </button>
+                              <button type="button"
+                                      class="btn btn-primary"
+                                      data-bs-dismiss="modal"
+                                      (click)="onAddImageAction()">
+                                Add Images
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-12">
+                      <div class="modal fade"
+                           id="open-image-modal"
+                           data-bs-keyboard="true"
+                           tabindex="-1">
+                        <div class="modal-dialog modal-dialog-centered modal-lg">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h1 class="modal-title fs-5">View Image</h1>
+                              <button type="button"
+                                      class="btn-close"
+                                      data-bs-dismiss="modal">
+                              </button>
+                            </div>
+                            <div class="modal-body">
+                              <div class="row">
+                                <div class="col-12">
+                                  <img class="w-100" [src]="viewImage" alt="">
+                                </div>
+                              </div>
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-12">
+                      <div class="modal fade"
+                           id="delete-image-modal"
+                           data-bs-backdrop="static"
+                           data-bs-keyboard="true"
+                           tabindex="-1">
+                        <div class="modal-dialog modal-dialog-centered">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h1 class="modal-title fs-5">Delete Image</h1>
+                              <button type="button"
+                                      class="btn-close"
+                                      data-bs-dismiss="modal">
+                              </button>
+                            </div>
+                            <div class="modal-body">
+                              <p>Bạn có chắc chắn muốn xoá hình ảnh này?</p>
+                              <div class="row">
+                                <div class="col-3 my-2">
+                                  <div class="w-100 ratio ratio-1x1">
+                                    <img class="object-fit-cover" [src]="previewDelete" alt="">
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                              <button type="button"
+                                      class="btn btn-primary"
+                                      data-bs-dismiss="modal"
+                                      (click)="onDeleteImageAction()">
+                                Delete Image
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card-footer"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

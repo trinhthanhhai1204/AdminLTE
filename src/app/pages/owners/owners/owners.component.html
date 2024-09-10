@@ -1,0 +1,103 @@
+<div class="content-wrapper">
+  <div class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1 class="m-0">User</h1>
+        </div>
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a routerLink="/">Home</a></li>
+            <li class="breadcrumb-item active"><a routerLink="/user/owners">Owners</a></li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+  <section class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12">
+          <div class="card shadow" id="book-table">
+            <div class="card-header">
+              <h3 class="card-title">
+                <i class="fa-light fa-chart-bar mr-1"></i>
+                Owners
+              </h3>
+              <div class="card-tools">
+                <div class="w-auto">
+                  <label for="sort-selector"></label>
+                  <select (change)="onSortChange()" [(ngModel)]="sort" class="p-1 ml-1" id="sort-selector">
+                    <option value="0">Default Sorting</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="card-body p-0">
+              <div class="row">
+                <div class="col-12">
+                  <div class="table-responsive">
+                    <table class="table table-hover table-bordered text-nowrap align-middle">
+                      <thead>
+                      <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Username</th>
+                        <th scope="col">Tên chủ sở hữu</th>
+                        <th scope="col">Avatar</th>
+                        <th scope="col">Số điện thoại</th>
+                        <th colspan="2" scope="col">Action</th>
+                      </tr>
+                      </thead>
+                      <tbody>
+                      <tr *ngFor="let customer of customers">
+                        <td class="align-middle">{{ customer.id }}.</td>
+                        <td class="align-middle">{{ customer.username }}</td>
+                        <td class="align-middle">{{ customer.name }}</td>
+                        <td class="align-middle">
+                          <img [src]="customer.image" alt=""
+                               class="object-fit-cover" style="border-radius: 50%">
+                        </td>
+                        <td class="align-middle">{{ customer.phone }}</td>
+                        <td class="align-middle">
+                          <a routerLink="/user/customer-details/{{customer.id}}">Show Details</a>
+                        </td>
+                        <td class="align-middle">
+                          <a routerLink="/orders-by-customer/{{customer.id}}">Show Orders</a>
+                        </td>
+                      </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card-footer">
+              <div class="row">
+                <div class="col-sm-12 col-md-5" id="">
+                  <p>Showing {{ page * size + 1 }} to {{ Math.min(page * size + size, count) }} of {{ count }}
+                    entries</p>
+                </div>
+                <div class="col-sm-12 col-md-7">
+                  <ul class="pagination justify-content-end">
+                    <li (click)="onPrevClick()" [ngClass]="{'disabled': page == 0}"
+                        class="paginate_button page-item previous">
+                      <a class="page-link cursor-pointer">Previous</a>
+                    </li>
+                    <li (click)="setPage(i - 1)" *ngFor="let i of pagesSequence"
+                        [ngClass]="{'active': page === i - 1}" class="paginate_button page-item active">
+                      <a class="page-link cursor-pointer">{{ i }}</a>
+                    </li>
+                    <li (click)="onNextClick()" [ngClass]="{'disabled': page == pages - 1}"
+                        class="paginate_button page-item next">
+                      <a class="page-link cursor-pointer">Next</a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
